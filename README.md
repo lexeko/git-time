@@ -86,6 +86,7 @@ git-time --email-alias old@example.com=new@example.com
 --email-alias, -e <other=main>    Repeatable email alias mapping
 --format, -f <text|json>          Output format (default: text)
 --sessions                        Show session breakdown
+--help, -h                        Show help
 ```
 
 ## How Sessions Work

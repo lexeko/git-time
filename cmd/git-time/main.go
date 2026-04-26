@@ -50,6 +50,7 @@ func run(args []string, stdout io.Writer) error {
 		noMerges      bool
 		format        string
 		showSessions  bool
+		help          bool
 		aliases       = aliasFlags{}
 	)
 
@@ -77,9 +78,15 @@ func run(args []string, stdout io.Writer) error {
 	flags.StringVar(&format, "format", "text", "output format: text or json")
 	flags.StringVar(&format, "f", "text", "output format: text or json")
 	flags.BoolVar(&showSessions, "sessions", false, "show session breakdown")
+	flags.BoolVar(&help, "help", false, "show help")
+	flags.BoolVar(&help, "h", false, "show help")
 
 	if err := flags.Parse(args); err != nil {
 		return err
+	}
+	if help {
+		printHelp(stdout)
+		return nil
 	}
 	if sessionGap < 0 {
 		return errors.New("--session-gap must be non-negative")
@@ -131,6 +138,29 @@ func run(args []string, stdout io.Writer) error {
 	)
 
 	return output.Write(stdout, result, format, showSessions)
+}
+
+func printHelp(w io.Writer) {
+	fmt.Fprint(w, `Usage:
+  git-time [options]
+
+Estimate working hours from Git commit history.
+
+Options:
+  --path, -p <path>                 Git repository path (default: current directory)
+  --session-gap, -g <minutes>       Max gap between commits in one session (default: 120)
+  --session-offset, -o <minutes>    Minutes credited at the start of each session (default: 120)
+  --since, -s <date>                all, today, yesterday, thisweek, lastweek, thismonth, lastmonth, YYYY-MM-DD
+  --until, -u <date>                all, today, yesterday, thisweek, lastweek, thismonth, lastmonth, YYYY-MM-DD
+  --branch, -b <name>               Analyze one branch (default: current branch)
+  --all-branches, -a                Analyze all branches
+  --merges, -m                      Include merge commits
+  --no-merges                       Exclude merge commits (default)
+  --email-alias, -e <other=main>    Repeatable email alias mapping
+  --format, -f <text|json>          Output format (default: text)
+  --sessions                        Show session breakdown
+  --help, -h                        Show help
+`)
 }
 
 func resolveDate(value string, startBound bool, now time.Time) (*time.Time, error) {
