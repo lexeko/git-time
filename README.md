@@ -1,11 +1,30 @@
 # git-time
 
-Estimate working hours from Git commit history.
+Estimate how much time a developer probably spent working, using only Git
+commit history.
 
-`git-time` is a small Go CLI that shells out to the installed `git` command and
-uses commit timestamps as a proxy for active work. It is an approximation, not a
-time tracker: Git history cannot know about reading, planning, breaks inside a
-session, or work after the last commit.
+`git-time` looks at when commits were made and groups nearby commits into work
+sessions. If 2 commits are close together, it assumes the time between them was
+active work. If they are far apart, it assumes the developer stopped and later
+started a new session.
+
+Because Git only records commits, the result is an estimate. It cannot see time
+spent reading code, debugging before the first commit, taking breaks, or working
+after the last commit. To account for some of that invisible setup time, each
+session gets a fixed offset.
+
+For example, with the default settings:
+
+```text
+10:00  commit
+11:00  commit
+15:00  commit
+```
+
+The 10:00 and 11:00 commits are treated as one session: 1 hour between commits
+plus a 2-hour session offset, for three estimated hours. The 15:00 commit is
+far enough away to start a new session, so it gets another 2-hour offset. The
+total estimate is 5 hours.
 
 ## Install
 
