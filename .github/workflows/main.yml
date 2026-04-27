@@ -4,10 +4,17 @@ on:
   push:
     branches: [main]
   pull_request:
+  release:
+    types: [published]
   workflow_dispatch:
+    inputs:
+      release-tag:
+        description: Existing release tag to upload binaries to
+        required: false
+        type: string
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
@@ -86,3 +93,10 @@ jobs:
         with:
           name: ${{ matrix.output }}
           path: dist/${{ matrix.output }}
+
+      - name: Upload binary to release
+        if: ${{ github.event_name == 'release' || inputs['release-tag'] != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || inputs['release-tag'] }}
+        run: gh release upload "$RELEASE_TAG" "dist/${{ matrix.output }}" --clobber

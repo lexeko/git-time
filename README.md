@@ -149,5 +149,5 @@ The final total is rounded to the nearest whole hour.
 ## Inspiration
 
 This project was inspired by git-hours by Kimmo Brunfeldt
-(https://github.com/kimmobrunfeldt/git-hours), but is a clean reimplementation
+(<https://github.com/kimmobrunfeldt/git-hours>), but is a clean reimplementation
 using the Git CLI instead of nodegit.
