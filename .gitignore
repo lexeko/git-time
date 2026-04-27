@@ -31,3 +31,7 @@ go.work.sum
 # .idea/
 # .vscode/
 .codex
+
+dist/
+git-time
+git-time.exe

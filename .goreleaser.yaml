@@ -1,0 +1,40 @@
+version: 2
+
+project_name: git-time
+
+builds:
+  - id: git-time
+    main: ./cmd/git-time
+    binary: git-time
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+
+archives:
+  - id: binaries
+    formats:
+      - binary
+    name_template: "{{ .ProjectName }}-{{ if eq .Os \"darwin\" }}macos{{ else }}{{ .Os }}{{ end }}-{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+
+checksum:
+  name_template: checksums.txt
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
