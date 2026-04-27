@@ -1,6 +1,6 @@
 # git-time
 
-Estimate how much time a developer probably spent working, using only Git
+Estimate how much time was likely spent working on a repository, using only Git 
 commit history.
 
 `git-time` looks at when commits were made and groups nearby commits into work
