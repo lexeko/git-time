@@ -19,12 +19,14 @@ type Session struct {
 
 type AuthorResult struct {
 	Email        string    `json:"email"`
+	CommitCount  int       `json:"commit_count"`
 	TotalMinutes int       `json:"total_minutes"`
 	TotalHours   int       `json:"total_hours"`
 	Sessions     []Session `json:"sessions,omitempty"`
 }
 
 type Result struct {
+	CommitCount  int            `json:"commit_count"`
 	TotalMinutes int            `json:"total_minutes"`
 	TotalHours   int            `json:"total_hours"`
 	Authors      []AuthorResult `json:"authors,omitempty"`

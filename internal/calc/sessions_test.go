@@ -60,6 +60,9 @@ func TestEstimateSessions(t *testing.T) {
 			if result.TotalHours != tt.wantHours {
 				t.Fatalf("TotalHours = %d, want %d", result.TotalHours, tt.wantHours)
 			}
+			if result.CommitCount != len(tt.minutes) {
+				t.Fatalf("CommitCount = %d, want %d", result.CommitCount, len(tt.minutes))
+			}
 		})
 	}
 }
@@ -77,6 +80,12 @@ func TestEstimateNormalizesAliases(t *testing.T) {
 	}
 	if result.Authors[0].Email != "new@example.com" {
 		t.Fatalf("author email = %q, want new@example.com", result.Authors[0].Email)
+	}
+	if result.Authors[0].CommitCount != 2 {
+		t.Fatalf("author commit count = %d, want 2", result.Authors[0].CommitCount)
+	}
+	if result.CommitCount != 2 {
+		t.Fatalf("total commit count = %d, want 2", result.CommitCount)
 	}
 	if result.TotalHours != 3 {
 		t.Fatalf("TotalHours = %d, want 3", result.TotalHours)

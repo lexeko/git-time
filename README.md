@@ -1,6 +1,6 @@
 # git-time
 
-Estimate how much time was likely spent working on a repository, using only Git 
+Estimate how much time was likely spent working on a repository, using only Git
 commit history.
 
 `git-time` looks at when commits were made and groups nearby commits into work
@@ -44,6 +44,12 @@ Analyze the current branch in the current repository:
 
 ```sh
 git-time
+```
+
+Example output:
+
+```text
+5 hours, 3 commits
 ```
 
 Analyze a different repository:
@@ -125,11 +131,13 @@ The final total is rounded to the nearest whole hour.
 
 ```json
 {
+  "commit_count": 2,
   "total_minutes": 180,
   "total_hours": 3,
   "authors": [
     {
       "email": "dev@example.com",
+      "commit_count": 2,
       "total_minutes": 180,
       "total_hours": 3,
       "sessions": [

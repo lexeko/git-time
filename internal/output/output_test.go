@@ -11,11 +11,13 @@ import (
 
 func TestWriteJSONIsValid(t *testing.T) {
 	result := model.Result{
+		CommitCount:  2,
 		TotalMinutes: 180,
 		TotalHours:   3,
 		Authors: []model.AuthorResult{
 			{
 				Email:        "dev@example.com",
+				CommitCount:  2,
 				TotalMinutes: 180,
 				TotalHours:   3,
 				Sessions: []model.Session{
@@ -42,5 +44,26 @@ func TestWriteJSONIsValid(t *testing.T) {
 	}
 	if decoded.TotalHours != 3 {
 		t.Fatalf("decoded TotalHours = %d, want 3", decoded.TotalHours)
+	}
+	if decoded.CommitCount != 2 {
+		t.Fatalf("decoded CommitCount = %d, want 2", decoded.CommitCount)
+	}
+}
+
+func TestWriteTextIncludesCommitCount(t *testing.T) {
+	result := model.Result{
+		CommitCount:  2,
+		TotalMinutes: 180,
+		TotalHours:   3,
+	}
+
+	var buf bytes.Buffer
+	if err := Write(&buf, result, "text", false); err != nil {
+		t.Fatalf("Write returned error: %v", err)
+	}
+
+	want := "3 hours, 2 commits\n"
+	if buf.String() != want {
+		t.Fatalf("text output = %q, want %q", buf.String(), want)
 	}
 }

@@ -30,7 +30,7 @@ func Estimate(commits []model.Commit, aliases map[string]string, sessionGap, ses
 			return authorCommits[i].Time.Before(authorCommits[j].Time)
 		})
 
-		author := model.AuthorResult{Email: email}
+		author := model.AuthorResult{Email: email, CommitCount: len(authorCommits)}
 		sessions := buildSessions(email, authorCommits, sessionGap, sessionOffset)
 		for _, session := range sessions {
 			author.TotalMinutes += session.Minutes
@@ -40,6 +40,7 @@ func Estimate(commits []model.Commit, aliases map[string]string, sessionGap, ses
 			author.Sessions = sessions
 		}
 
+		result.CommitCount += author.CommitCount
 		result.TotalMinutes += author.TotalMinutes
 		result.Authors = append(result.Authors, author)
 	}
