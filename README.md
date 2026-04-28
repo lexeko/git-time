@@ -28,6 +28,8 @@ total estimate is 5 hours.
 
 ## Install
 
+Simply download a binary for your system from the latest release or do
+
 ```sh
 go install github.com/lexeko/git-time/cmd/git-time@latest
 ```
